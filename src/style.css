@@ -1,0 +1,382 @@
+/* ==========================================================
+   Toss Design System(TDS) 스타일 참고 CSS
+   - 실제 TDS 컴포넌트 라이브러리는 아니고, 토스 앱 특유의 톤을
+     참고해서 만든 커스텀 스타일입니다.
+   - 화면 자체를 카드/박스로 감싸지 않고, 흰 배경 위에
+     콘텐츠가 그대로 놓이는 실제 토스 화면 구조를 따름.
+   - 입력창도 박스가 아니라 밑줄(underline) 스타일.
+   ========================================================== */
+
+:root {
+    --tds-blue-500: #3182f6;   /* 메인 포인트 컬러 */
+    --tds-blue-600: #1b64da;
+
+    --tds-grey-900: #191f28;   /* 진한 텍스트 */
+    --tds-grey-700: #4e5968;
+    --tds-grey-500: #8b95a1;
+    --tds-grey-300: #d1d6db;
+    --tds-grey-200: #e5e8eb;
+    --tds-grey-100: #f2f4f6;
+    --tds-white: #ffffff;
+
+    --tds-radius-md: 12px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    background-color: var(--tds-white);
+}
+
+/* 화면 전체 - 흰 배경, 카드/그림자/둥근 테두리 전부 없음 */
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--tds-white);
+    color: var(--tds-grey-900);
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.page {
+    width: min(92%, 480px);
+    margin-inline: auto;
+    padding: 48px 4px 120px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.tab-panel {
+    display: none;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.tab-panel.active {
+    display: flex;
+}
+
+.home-desc {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--tds-grey-700);
+    margin: 0;
+}
+
+.field-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--tds-grey-500);
+    margin-bottom: -12px;
+}
+
+/* 제목 - "휴대폰 번호를 입력해주세요." 스샷처럼
+   크고 굵게, 카드 없이 화면 상단에 바로 배치 */
+#title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.4;
+    color: var(--tds-grey-900);
+    margin: 0;
+}
+
+/* 입력창 - 박스가 아니라 밑줄 스타일.
+   평소엔 연한 회색 밑줄, 포커스되면 파란 밑줄 + 두꺼워짐 */
+#usr,
+#name {
+    width: 100%;
+    height: 44px;
+    padding: 0 2px;
+    font-size: 18px;
+    font-family: inherit;
+    color: var(--tds-grey-900);
+    background-color: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--tds-grey-200);
+    border-radius: 0;
+    outline: none;
+    transition: border-color 0.15s ease, border-width 0.15s ease;
+}
+
+#usr::placeholder,
+#name::placeholder {
+    color: var(--tds-grey-500);
+}
+
+#usr:focus,
+#name:focus {
+    border-bottom: 2px solid var(--tds-blue-500);
+}
+
+/* 결과 영역 - 카드로 감싸지 않고, 화면 안에서
+   구분되는 텍스트 블록으로만 표현 */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    text-align: left;
+    padding: 8px 0;
+}
+
+.stage {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--tds-blue-500);
+}
+
+.lv {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--tds-grey-900);
+}
+
+.detail {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--tds-grey-500);
+}
+
+/* 제출 버튼 - 화면은 각지지만, 버튼 자체는
+   TDS 버튼처럼 둥글게 유지 (여기만 radius 적용) */
+#submit {
+    width: 100%;
+    height: 56px;
+    margin-top: auto;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--tds-white);
+    background-color: var(--tds-blue-500);
+    border: none;
+    border-radius: var(--tds-radius-md);
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+#submit:hover {
+    background-color: var(--tds-blue-600);
+}
+
+#submit:active {
+    transform: scale(0.98);
+}
+
+#submit:disabled {
+    background-color: var(--tds-grey-300);
+    color: var(--tds-white);
+    cursor: not-allowed;
+}
+
+/* ==========================================================
+   질문 기록 / 질문의 전당
+   ========================================================== */
+
+.history-list,
+.hof-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.empty-msg {
+    font-size: 14px;
+    color: var(--tds-grey-500);
+    padding: 24px 0;
+    text-align: center;
+}
+
+.history-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px;
+    background-color: var(--tds-grey-100);
+    border-radius: var(--tds-radius-md);
+}
+
+.history-item-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.history-q {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--tds-grey-900);
+}
+
+.history-lv {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--tds-blue-500);
+    white-space: nowrap;
+}
+
+.history-stage {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--tds-blue-600);
+}
+
+.history-detail {
+    margin: 4px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--tds-grey-500);
+}
+
+/* 질문의 전당 */
+
+.hof-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+    background-color: var(--tds-grey-100);
+    border-radius: var(--tds-radius-md);
+}
+
+.hof-rank {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: var(--tds-blue-500);
+    color: var(--tds-white);
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hof-item:nth-child(n+4) .hof-rank {
+    background-color: var(--tds-grey-300);
+    color: var(--tds-grey-700);
+}
+
+.hof-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.hof-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.hof-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--tds-grey-900);
+}
+
+.hof-lv {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--tds-blue-500);
+    white-space: nowrap;
+}
+
+.hof-q {
+    margin: 0;
+    font-size: 13px;
+    color: var(--tds-grey-700);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hof-bar-track {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background-color: var(--tds-grey-200);
+    overflow: hidden;
+}
+
+.hof-bar-fill {
+    height: 100%;
+    background-color: var(--tds-blue-500);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.hof-stage-badge {
+    align-self: flex-start;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--tds-blue-600);
+    background-color: #eaf2fe;
+    padding: 3px 8px;
+    border-radius: 999px;
+}
+
+/* ==========================================================
+   하단 탭바 (TDS 스타일 - 둥근 플로팅 캡슐)
+   ========================================================== */
+
+.tabbar {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    width: min(92%, 480px);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--tds-white);
+    border-radius: 999px;
+    box-shadow: 0 8px 24px rgba(25, 31, 40, 0.12), 0 1px 2px rgba(25, 31, 40, 0.06);
+    padding: 8px 4px;
+    z-index: 10;
+}
+
+.tabbar-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    padding: 6px 2px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--tds-grey-500);
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.tabbar-item svg {
+    width: 22px;
+    height: 22px;
+    color: var(--tds-grey-500);
+    transition: color 0.15s ease;
+}
+
+.tabbar-item.active {
+    color: var(--tds-grey-900);
+}
+
+.tabbar-item.active svg {
+    color: var(--tds-blue-500);
+}
