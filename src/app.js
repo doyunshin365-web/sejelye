@@ -4,10 +4,23 @@ const usr_input = document.querySelector('#usr');
 const name_input = document.querySelector('#name');
 
 // 이 브라우저를 식별하기 위한 id (서버 메모리 기록을 브라우저별로 필터링하는 용도)
+// crypto.randomUUID는 HTTPS/localhost가 아닌 환경(secure context 아님)에서는
+// 지원되지 않아 undefined일 수 있으므로 직접 만든 폴백을 사용한다.
+function generateId() {
+  if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+    return window.crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
 function getClientId() {
   let id = localStorage.getItem('clientId');
   if (!id) {
-    id = crypto.randomUUID();
+    id = generateId();
     localStorage.setItem('clientId', id);
   }
   return id;
