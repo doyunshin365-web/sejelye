@@ -188,6 +188,35 @@ async function loadLeaderboard() {
   }
 }
 
+// ---------------- 리더보드 초기화 ----------------
+
+const resetHofBtn = document.getElementById('reset-hof');
+
+resetHofBtn.addEventListener('click', async () => {
+  const password = prompt('리더보드를 초기화하려면 비밀번호를 입력하세요.');
+  if (password === null) return;
+
+  try {
+    const res = await fetch('/api/leaderboard/reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.error || '초기화에 실패했습니다.');
+      return;
+    }
+
+    await loadLeaderboard();
+    alert('리더보드가 초기화되었습니다.');
+  } catch (e) {
+    console.error(e);
+    alert('초기화 중 오류가 발생했습니다.');
+  }
+});
+
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
