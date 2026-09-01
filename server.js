@@ -109,6 +109,18 @@ app.get('/api/leaderboard', (req, res) => {
   res.json({ records: list });
 });
 
+// 리더보드(기록) 초기화: 비밀번호 필요
+app.post('/api/leaderboard/reset', (req, res) => {
+  const { password } = req.body;
+
+  if (password !== process.env.RESET_PASSWORD) {
+    return res.status(401).json({ error: '비밀번호가 틀렸습니다.' });
+  }
+
+  records.length = 0;
+  res.json({ ok: true });
+});
+
 app.listen(3000, () => {
   console.log('준식 on http://localhost:3000');
 });
