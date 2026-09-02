@@ -194,10 +194,42 @@ async function loadLeaderboard() {
 // ---------------- 리더보드 초기화 ----------------
 
 const resetHofBtn = document.getElementById('reset-hof');
+const resetModal = document.getElementById('reset-modal');
+const resetPasswordInput = document.getElementById('reset-password');
+const resetMask = document.getElementById('reset-mask');
+const resetError = document.getElementById('reset-error');
+const resetCancelBtn = document.getElementById('reset-cancel');
+const resetConfirmBtn = document.getElementById('reset-confirm');
 
-resetHofBtn.addEventListener('click', async () => {
-  const password = prompt('리더보드를 초기화하려면 비밀번호를 입력하세요.');
-  if (password === null) return;
+// 모바일 키보드는 type="password"여도 방금 입력한 마지막 글자를 잠깐 평문으로 보여준다.
+// 화면 미러링 시 그대로 노출되므로, input을 마스크로 덮어 항상 점(•)만 보이게 한다.
+resetPasswordInput.addEventListener('input', () => {
+  resetMask.textContent = '•'.repeat(resetPasswordInput.value.length);
+});
+
+function openResetModal() {
+  resetError.textContent = '';
+  resetPasswordInput.value = '';
+  resetMask.textContent = '';
+  resetModal.hidden = false;
+  resetPasswordInput.focus();
+}
+
+function closeResetModal() {
+  resetModal.hidden = true;
+}
+
+resetHofBtn.addEventListener('click', openResetModal);
+resetCancelBtn.addEventListener('click', closeResetModal);
+
+resetModal.addEventListener('click', (e) => {
+  if (e.target === resetModal) closeResetModal();
+});
+
+async function submitResetPassword() {
+  const password = resetPasswordInput.value;
+  resetError.textContent = '';
+  resetConfirmBtn.disabled = true;
 
   try {
     const res = await fetch('/api/leaderboard/reset', {
@@ -208,16 +240,23 @@ resetHofBtn.addEventListener('click', async () => {
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.error || '초기화에 실패했습니다.');
+      resetError.textContent = data.error || '초기화에 실패했습니다.';
       return;
     }
 
+    closeResetModal();
     await loadLeaderboard();
-    alert('리더보드가 초기화되었습니다.');
   } catch (e) {
     console.error(e);
-    alert('초기화 중 오류가 발생했습니다.');
+    resetError.textContent = '초기화 중 오류가 발생했습니다.';
+  } finally {
+    resetConfirmBtn.disabled = false;
   }
+}
+
+resetConfirmBtn.addEventListener('click', submitResetPassword);
+resetPasswordInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') submitResetPassword();
 });
 
 function escapeHtml(str) {

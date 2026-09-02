@@ -206,6 +206,118 @@ body {
 }
 
 /* ==========================================================
+   리더보드 초기화 모달
+   ========================================================== */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 100;
+}
+
+.modal-backdrop[hidden] {
+    display: none;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 320px;
+    background: var(--tds-white);
+    border-radius: var(--tds-radius-md);
+    padding: 24px 20px;
+}
+
+.modal-title {
+    margin: 0 0 4px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--tds-grey-900);
+}
+
+.modal-desc {
+    margin: 0 0 12px;
+    font-size: 14px;
+    color: var(--tds-grey-500);
+}
+
+.modal-input-wrap {
+    position: relative;
+}
+
+.modal-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 0;
+    font-size: 16px;
+    font-family: inherit;
+    border: none;
+    border-bottom: 1.5px solid var(--tds-grey-300);
+    outline: none;
+}
+
+.modal-input:focus {
+    border-bottom-color: var(--tds-blue-500);
+}
+
+/* iOS/Android 키보드가 방금 입력한 글자를 잠깐 그대로 보여주는 것(화면 미러링 시 노출)을
+   막기 위해, 실제 input 위에 항상 점(dot)만 그려주는 마스크를 덮어씌운다. */
+.modal-input-mask {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    background: var(--tds-white);
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: var(--tds-grey-900);
+    pointer-events: none;
+}
+
+.modal-error {
+    margin: 8px 0 0;
+    font-size: 13px;
+    color: #e53e3e;
+    min-height: 16px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.modal-btn {
+    flex: 1;
+    height: 44px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    border: none;
+    border-radius: var(--tds-radius-md);
+    cursor: pointer;
+}
+
+.modal-btn-ghost {
+    background: var(--tds-grey-100);
+    color: var(--tds-grey-700);
+}
+
+.modal-btn-primary {
+    background: var(--tds-blue-500);
+    color: var(--tds-white);
+}
+
+.modal-btn-primary:disabled {
+    background: var(--tds-grey-300);
+    cursor: not-allowed;
+}
+
+/* ==========================================================
    질문 기록 / 질문의 전당
    ========================================================== */
 
