@@ -245,6 +245,10 @@ body {
     color: var(--tds-grey-500);
 }
 
+.modal-input-wrap {
+    position: relative;
+}
+
 .modal-input {
     width: 100%;
     box-sizing: border-box;
@@ -258,6 +262,20 @@ body {
 
 .modal-input:focus {
     border-bottom-color: var(--tds-blue-500);
+}
+
+/* iOS/Android 키보드가 방금 입력한 글자를 잠깐 그대로 보여주는 것(화면 미러링 시 노출)을
+   막기 위해, 실제 input 위에 항상 점(dot)만 그려주는 마스크를 덮어씌운다. */
+.modal-input-mask {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    background: var(--tds-white);
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: var(--tds-grey-900);
+    pointer-events: none;
 }
 
 .modal-error {

@@ -196,13 +196,21 @@ async function loadLeaderboard() {
 const resetHofBtn = document.getElementById('reset-hof');
 const resetModal = document.getElementById('reset-modal');
 const resetPasswordInput = document.getElementById('reset-password');
+const resetMask = document.getElementById('reset-mask');
 const resetError = document.getElementById('reset-error');
 const resetCancelBtn = document.getElementById('reset-cancel');
 const resetConfirmBtn = document.getElementById('reset-confirm');
 
+// 모바일 키보드는 type="password"여도 방금 입력한 마지막 글자를 잠깐 평문으로 보여준다.
+// 화면 미러링 시 그대로 노출되므로, input을 마스크로 덮어 항상 점(•)만 보이게 한다.
+resetPasswordInput.addEventListener('input', () => {
+  resetMask.textContent = '•'.repeat(resetPasswordInput.value.length);
+});
+
 function openResetModal() {
   resetError.textContent = '';
   resetPasswordInput.value = '';
+  resetMask.textContent = '';
   resetModal.hidden = false;
   resetPasswordInput.focus();
 }
