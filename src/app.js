@@ -66,10 +66,12 @@ async function evaluateMessage(userText, userName) {
   const stage_txt = container.querySelector('.stage');
   const lv_txt = container.querySelector('.lv');
   const detail_txt = container.querySelector('.detail');
+  const advice_txt = container.querySelector('.advice');
 
   stage_txt.textContent = result.stage + "단계";
   lv_txt.textContent = result.lv + "점";
   detail_txt.textContent = result.detail;
+  advice_txt.textContent = result.advice ? `💡 ${result.advice}` : '';
 }
 
 submit_btn.addEventListener('click', async () => {
@@ -143,6 +145,7 @@ async function loadHistory() {
         </div>
         <span class="history-stage">${r.stage}단계 (${stageLabel(r.stage)})</span>
         <p class="history-detail">${escapeHtml(r.detail || '')}</p>
+        ${r.advice ? `<p class="history-advice">💡 ${escapeHtml(r.advice)}</p>` : ''}
       </li>
     `).join('');
   } catch (e) {

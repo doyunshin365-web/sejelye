@@ -143,6 +143,18 @@ body {
     color: var(--tds-grey-500);
 }
 
+.advice {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--tds-blue-600);
+}
+
+.advice:empty {
+    display: none;
+}
+
 /* 제출 버튼 - 화면은 각지지만, 버튼 자체는
    TDS 버튼처럼 둥글게 유지 (여기만 radius 적용) */
 #submit {
@@ -254,6 +266,14 @@ body {
     font-size: 13px;
     line-height: 1.5;
     color: var(--tds-grey-500);
+}
+
+.history-advice {
+    margin: 4px 0 0;
+    font-size: 13px;
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--tds-blue-600);
 }
 
 /* 질문의 전당 */
