@@ -43,6 +43,20 @@
 
     </div>
 
+    <!-- 리더보드 초기화 비밀번호 모달 -->
+    <div class="modal-backdrop" id="reset-modal" hidden>
+        <div class="modal-box">
+            <p class="modal-title">리더보드 초기화</p>
+            <p class="modal-desc">비밀번호를 입력하세요.</p>
+            <input type="password" id="reset-password" class="modal-input" autocomplete="off">
+            <p class="modal-error" id="reset-error"></p>
+            <div class="modal-actions">
+                <button id="reset-cancel" class="modal-btn modal-btn-ghost">취소</button>
+                <button id="reset-confirm" class="modal-btn modal-btn-primary">확인</button>
+            </div>
+        </div>
+    </div>
+
     <nav class="tabbar">
         <button class="tabbar-item" data-tab="ask">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.4 2.33c-.77.32-1.4.9-1.4 1.67v.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.7" r="1" fill="currentColor"/></svg>
