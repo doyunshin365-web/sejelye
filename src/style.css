@@ -155,6 +155,17 @@ body {
     display: none;
 }
 
+.ask-error {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #e53e3e;
+}
+
+.ask-error:empty {
+    display: none;
+}
+
 /* 제출 버튼 - 화면은 각지지만, 버튼 자체는
    TDS 버튼처럼 둥글게 유지 (여기만 radius 적용) */
 #submit {

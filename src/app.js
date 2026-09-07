@@ -34,33 +34,38 @@ name_input.addEventListener('change', () => {
   localStorage.setItem('userName', name_input.value.trim());
 });
 
+const askError = document.getElementById('ask-error');
+
 async function evaluateMessage(userText, userName) {
-  const res = await fetch('/api/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      messages: [
-        { role: 'user', parts: [{ text: userText }] }
-      ],
-      name: userName,
-      question: userText,
-      clientId,
-    }),
-  });
+  let res;
+  try {
+    res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [
+          { role: 'user', parts: [{ text: userText }] }
+        ],
+        name: userName,
+        question: userText,
+        clientId,
+      }),
+    });
+  } catch (e) {
+    throw new Error('서버에 연결할 수 없어요. 인터넷 연결을 확인해주세요.');
+  }
 
   const data = await res.json();
 
-  if (data.error) {
-    console.error(data.error);
-    return;
+  if (!res.ok || data.error) {
+    throw new Error(data.error || `채점 중 오류가 발생했어요. (${res.status})`);
   }
 
   let result;
   try {
     result = JSON.parse(data.text);
   } catch (e) {
-    console.error('JSON 파싱 실패:', data.text);
-    return;
+    throw new Error('채점 결과를 읽는 데 실패했어요. 다시 시도해주세요.');
   }
 
   const stage_txt = container.querySelector('.stage');
@@ -82,11 +87,16 @@ submit_btn.addEventListener('click', async () => {
   localStorage.setItem('userName', userName);
 
   submit_btn.disabled = true;
+  askError.textContent = '';
   usr_input.value = '';
 
   try {
     await evaluateMessage(usr, userName);
     await Promise.all([loadHistory(), loadLeaderboard()]);
+  } catch (e) {
+    console.error(e);
+    askError.textContent = e.message || '알 수 없는 오류가 발생했어요.';
+    usr_input.value = usr;
   } finally {
     submit_btn.disabled = false;
   }
