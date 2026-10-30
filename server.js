@@ -47,10 +47,15 @@ app.post('/api/chat', async (req, res) => {
                 - 5: 매우 높음
                 - 평가 기준은 위 규칙에 맞는가
                 
-                2. lv: 사용자의 메시지 수준을 0~100 사이의 정수로 평가한다.
-                - 0~10: 매우 낮음
-                - 90~100: 매우 높음
-                - 평가 기준은 질문의 구체성, 논리성, 이해도, 사고의 깊이, 질문의 의도 등을 종합한다.
+                2. lv: 사용자의 메시지 수준을 1~100 사이의 정수로 평가한다.
+                - lv는 반드시 stage에 맞는 범위 안에서 정한다. 범위를 벗어나는 값은 절대 출력하지 마라.
+                  1단계: 1~20점
+                  2단계: 21~40점
+                  3단계: 41~60점
+                  4단계: 61~80점
+                  5단계: 81~100점
+                - 같은 단계 안에서는 질문의 구체성, 논리성, 이해도, 사고의 깊이, 질문의 의도 등을 종합해 범위 내 위치를 정한다.
+                - 단계가 높을수록 반드시 더 높은 점수가 나와야 한다. (예: 5단계인데 60점, 2단계인데 70점은 잘못된 출력이다.)
 
                 3. detail: 왜 그런 점수를 주었는지 한국어로 간단하고 구체적으로 설명한다.
 
@@ -79,12 +84,21 @@ app.post('/api/chat', async (req, res) => {
         ...userMessages,
       ],
     });
-    const responseText = completion.choices[0].message.content;
+    let responseText = completion.choices[0].message.content;
     let parsed = null;
     try {
       parsed = JSON.parse(responseText);
     } catch (e) {
       // 파싱 실패해도 응답은 그대로 클라이언트에 전달
+    }
+
+    // 단계별 점수 범위: 1단계 1~20, 2단계 21~40, ... 5단계 81~100
+    if (parsed && Number.isInteger(parsed.stage) && parsed.stage >= 1 && parsed.stage <= 5) {
+      const min = (parsed.stage - 1) * 20 + 1;
+      const max = parsed.stage * 20;
+      const lv = Math.round(Number(parsed.lv));
+      parsed.lv = Math.min(max, Math.max(min, Number.isFinite(lv) ? lv : min));
+      responseText = JSON.stringify(parsed);
     }
 
     if (parsed) {
